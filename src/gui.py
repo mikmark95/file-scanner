@@ -1,0 +1,1 @@
+# Gestione dell'interfaccia grafica con PyQt6

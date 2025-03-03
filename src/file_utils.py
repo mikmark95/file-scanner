@@ -1,0 +1,1 @@
+# Funzioni per la scansione e la copia dei file

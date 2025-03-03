@@ -1,0 +1,1 @@
+# Funzioni per la gestione dei pattern regex
