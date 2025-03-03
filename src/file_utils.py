@@ -3,7 +3,7 @@
 # file_utils.py
 import os
 import shutil
-from patterns.py import azione
+from patterns import azione
 
 def scan_dir(path_input, comune, key, diz_out, pattern, checkbox, log_callback):
     for entry in os.scandir(path_input):
