@@ -1,30 +1,38 @@
+import importlib
 import requests
 import webbrowser
-from config import versione  # Importa la versione attuale del programma
+from config import versione
 
-GITHUB_API_URL = "https://api.github.com/repos/tuo-username/my_project/releases/latest"
-DOWNLOAD_URL = "https://github.com/tuo-username/my_project/releases"
 
-def get_latest_version():
-    """ Recupera l'ultima versione rilasciata su GitHub. """
-    try:
-        response = requests.get(GITHUB_API_URL, timeout=5)
-        if response.status_code == 200:
-            latest_release = response.json()
-            return latest_release["tag_name"].lstrip("v")  # Rimuove il prefisso "v" se presente
-    except requests.RequestException:
-        print("Errore nel controllare la versione.")
-    return None
+def check_version():
+    # Versione attuale del programma (locale)
+    current_version = versione
 
-def check_for_update():
-    """ Controlla se è disponibile una nuova versione e, in caso, apre la pagina di download. """
-    latest_version = get_latest_version()
-    if latest_version and latest_version != versione:
-        print(f"Nuova versione disponibile: {latest_version} (attuale: {versione})")
-        print("Vai alla pagina di download per aggiornare.")
-        webbrowser.open(DOWNLOAD_URL)
+    # URL del repository GitHub che contiene il file config.py
+    repo_url = "https://raw.githubusercontent.com/mikmark95/file-scanner/main/src/config.py"
+
+    # Fai una richiesta HTTP per ottenere il file config.py dal repository GitHub
+    response = requests.get(repo_url)
+
+    if response.status_code == 200:
+        # Leggi la versione dal file configurazione su GitHub
+        remote_config = response.text
+        start_index = remote_config.find('versione = "') + len('versione = "')
+        end_index = remote_config.find('"', start_index)
+        remote_version = remote_config[start_index:end_index]
+
+        # Confronta la versione corrente con quella remota
+        if current_version != remote_version:
+            print(f"Attenzione! Una nuova versione ({remote_version}) è disponibile.")
+            # Apri la pagina di download della versione più recente su GitHub
+            download_url = "https://github.com/mikmark95/file-scanner/releases"  # Modifica con il tuo URL di release
+            print(f"Visita questa pagina per scaricare l'ultima versione: {download_url}")
+            webbrowser.open(download_url)  # Apre il browser con l'URL di download
+        else:
+            print(f"Il programma è aggiornato alla versione {remote_version}.")
     else:
-        print("Il programma è aggiornato.")
+        print("Errore nel recuperare il file di configurazione da GitHub.")
+
 
 if __name__ == "__main__":
-    check_for_update()
+    check_version()
