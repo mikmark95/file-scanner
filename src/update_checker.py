@@ -51,7 +51,7 @@ def ask_update(remote_version):
 
     # Se l'utente clicca "Sì"
     if reply == QMessageBox.StandardButton.Yes:
-        download_url = "https://github.com/mikmark95/file-scanner/releases"  # Modifica con il tuo URL di release
+        download_url = "https://github.com/mikmark95/file-scanner/releases/latest"  # Modifica con il tuo URL di release
         print(f"Visita questa pagina per scaricare l'ultima versione: {download_url}")
         webbrowser.open(download_url)  # Apre il browser con l'URL di download
     else:
