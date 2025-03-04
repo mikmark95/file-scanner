@@ -3,7 +3,7 @@ from PyQt6.QtWidgets import QApplication
 from PyQt6.QtCore import QTimer
 from gui import FileScannerApp
 from update_checker import check_version
-from splash_screen import create_splash
+from splash_screen import SplashScreen  # Importa la nuova classe SplashScreen
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
@@ -17,32 +17,20 @@ if __name__ == "__main__":
         widget.move(widget_geometry.topLeft())
 
     # Crea lo splash screen
-    splash = create_splash()
-    if splash is None:
-        print("❌ Splash screen non caricato, avvio diretto della GUI.")
-        check_version()
-        main_window = FileScannerApp()
-        main_window.show()
-        center_widget(main_window)
-        sys.exit(app.exec())
-
-    # Mostra e centra lo splash screen
+    splash = SplashScreen()
     splash.show()
     center_widget(splash)
-
-
 
     # Funzione per avviare la finestra principale dopo 3 secondi
     def start_main():
         global main_window
+        splash.close()  # Chiude manualmente lo splash screen
+        check_version()  # Eseguiamo il controllo della versione prima di aprire la GUI
         main_window = FileScannerApp()
         main_window.show()
         center_widget(main_window)
-        splash.finish(main_window)
 
-    # Avvia la GUI dopo 2000 ms (2 secondi)
-    QTimer.singleShot(2000, start_main)
-    # Esegui il controllo versione
-    check_version()
+    # Avvia la GUI dopo 3 secondi
+    QTimer.singleShot(3000, start_main)
 
     sys.exit(app.exec())
