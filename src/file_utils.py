@@ -12,9 +12,25 @@ def scan_dir(path_input, comune, key, diz_out, pattern, checkbox, log_callback):
         elif entry.is_file(follow_symlinks=False):
             if key in entry.name:
                 data = azione(pattern, entry.path)
-                chiave = f"{comune}_{data}_{entry.name}" if checkbox else f"{data}_{entry.name}"
-                diz_out[chiave] = entry.path
-                log_callback(f"Elemento aggiunto al dizionario --> {chiave}")
+                if data == 'vuoto':
+                    if checkbox:
+                        chiave = f"{comune}_{os.path.basename(entry.name)}"
+                    else:
+                        chiave = f"{os.path.basename(entry.name)}"
+                    diz_out[chiave] = entry.path
+                    log_callback.append(f"Elemento aggiunto al dizionario --> {chiave}")
+                elif data:
+                    if checkbox:
+                        chiave = f"{comune}_{data}_{os.path.basename(entry.name)}"
+                    else:
+                        chiave = f"{data}_{os.path.basename(entry.name)}"
+                    diz_out[chiave] = entry.path
+                    log_callback.append(f"Elemento aggiunto al dizionario --> {chiave}")
+
+
+                # chiave = f"{comune}_{data}_{entry.name}" if checkbox else f"{data}_{entry.name}"
+                # diz_out[chiave] = entry.path
+                # log_callback.append(f"Elemento aggiunto al dizionario --> {chiave}")
 
 def copy_files(diz_out, output_path, log_callback):
     for chiave, elem in diz_out.items():
