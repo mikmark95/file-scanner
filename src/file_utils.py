@@ -21,3 +21,10 @@ def copy_files(diz_out, output_path, log_callback):
         dest = os.path.join(output_path, chiave)
         shutil.copy2(elem, dest)
         log_callback(f"Copia in corso: {elem} --> {dest}")
+
+def center_widget(app, widget):
+    screen = app.primaryScreen()
+    screen_geometry = screen.availableGeometry()
+    widget_geometry = widget.frameGeometry()
+    widget_geometry.moveCenter(screen_geometry.center())
+    widget.move(widget_geometry.topLeft())
