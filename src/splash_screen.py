@@ -1,42 +1,59 @@
 import sys
-from PyQt6.QtWidgets import QApplication, QSplashScreen, QLabel
-from PyQt6.QtGui import QMovie
-from PyQt6.QtCore import Qt
 import os
+from PyQt6.QtWidgets import QApplication, QLabel, QWidget, QVBoxLayout
+from PyQt6.QtGui import QMovie
+from PyQt6.QtCore import Qt, QTimer
 
-def create_splash():
-    """Crea uno splash screen con una GIF animata in PyQt6."""
-    # Crea una finestra splash senza immagine iniziale
-    splash = QSplashScreen()
-    splash.setWindowFlags(Qt.WindowType.WindowStaysOnTopHint | Qt.WindowType.FramelessWindowHint)
-    print(os.getcwd())
-    # Trova il percorso assoluto della GIF
-    base_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))  # Cartella dello script
-    gif_path = os.path.join(base_path,"assets", "loading.gif")
+class SplashScreen(QWidget):
+    def __init__(self):
+        super().__init__()
 
-    # Verifica che il file esista
-    if not os.path.exists(gif_path):
-        print(f"❌ Errore: GIF non trovata! Percorso: {gif_path}")
-        return None
+        # 🔹 Rendi la finestra senza bordi e sempre in primo piano
+        self.setWindowFlags(Qt.WindowType.FramelessWindowHint | Qt.WindowType.WindowStaysOnTopHint)
 
-    # Crea un QLabel e assegna la GIF con QMovie
-    label = QLabel(splash)
-    movie = QMovie(gif_path)
+        # 🔹 Trova il percorso della GIF
+        base_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))  # Cartella dello script
+        gif_path = os.path.join(base_path, "assets", "splash.gif")
 
-    # Verifica se la GIF è valida
-    if not movie.isValid():
-        print(f"❌ Errore: GIF non valida o non supportata!")
-        return None
+        # 🔹 Verifica che il file esista
+        if not os.path.exists(gif_path):
+            print(f"❌ Errore: GIF non trovata! Percorso: {gif_path}")
+            return
 
-    label.setMovie(movie)
-    movie.start()
+        # 🔹 Creazione di una QLabel per mostrare la GIF animata
+        self.label = QLabel(self)
+        self.movie = QMovie(gif_path)  # Creiamo un oggetto QMovie per la GIF
 
-    # Imposta la dimensione della finestra per adattarsi alla GIF
-    splash.resize(movie.frameRect().size())
+        # ✅ Verifica che la GIF sia valida
+        if not self.movie.isValid():
+            print("❌ Errore: GIF non valida!")
+            return
 
-    # Mostra lo splash screen
+        # ✅ Imposta la GIF su QLabel e avviala
+        self.label.setMovie(self.movie)
+        self.movie.setCacheMode(QMovie.CacheMode.CacheAll)  # Usa cache per evitare lag
+        self.movie.setSpeed(100)  # Imposta la velocità normale
+        self.movie.start()  # Avvia la GIF
+
+        # 🔹 Imposta il layout
+        layout = QVBoxLayout(self)
+        layout.addWidget(self.label)
+        self.setLayout(layout)
+
+        # ✅ Imposta la dimensione della finestra alla dimensione della GIF
+        self.resize(self.movie.frameRect().size())
+
+    def close_splash(self):
+        """Chiude lo splash screen."""
+        self.movie.stop()  # Ferma la GIF prima di chiudere
+        self.close()
+
+if __name__ == "__main__":
+    app = QApplication(sys.argv)
+    splash = SplashScreen()
     splash.show()
 
-    return splash
+    # ✅ Usa QTimer per chiudere lo splash dopo 3 secondi SENZA bloccare l'interfaccia
+    QTimer.singleShot(3000, splash.close_splash)
 
-
+    sys.exit(app.exec())
