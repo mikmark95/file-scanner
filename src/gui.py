@@ -4,7 +4,7 @@ import shutil
 import os
 from PyQt6.QtGui import QIcon
 from PyQt6.QtWidgets import QApplication, QWidget, QVBoxLayout, QPushButton, QTextEdit, QLabel, QLineEdit, QFileDialog, \
-    QMessageBox, QMenuBar, QMenu, QComboBox, QCheckBox, QHBoxLayout
+    QMessageBox, QMenuBar, QMenu, QComboBox, QCheckBox, QHBoxLayout, QSystemTrayIcon
 from config import autore, versione, icona
 from file_utils import scan_dir
 
@@ -17,6 +17,7 @@ class FileScannerApp(QWidget):
         self.setWindowTitle("File Scanner & Copier")
         self.setGeometry(150, 150, 640, 450)
         self.setFixedSize(640, 450)
+
 
         base_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))  # Cartella dello script
         ico_path = os.path.join(base_path, "assets", "github.ico")

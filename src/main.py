@@ -2,7 +2,7 @@ import sys
 from PyQt6.QtWidgets import QApplication
 from PyQt6.QtCore import QTimer
 from gui import FileScannerApp
-from src.file_utils import center_widget
+from file_utils import center_widget
 from update_checker import check_version
 from splash_screen import SplashScreen  # Importa la nuova classe SplashScreen
 
