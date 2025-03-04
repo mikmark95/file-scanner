@@ -27,8 +27,12 @@ if __name__ == "__main__":
         splash.close()  # Chiude manualmente lo splash screen
         check_version()  # Eseguiamo il controllo della versione prima di aprire la GUI
         main_window = FileScannerApp()
-        main_window.show()
+
+        # Centra la finestra principale prima di mostrarla
         center_widget(main_window)
+
+        # Mostra la finestra principale
+        main_window.show()
 
     # Avvia la GUI dopo 3 secondi
     QTimer.singleShot(3000, start_main)
