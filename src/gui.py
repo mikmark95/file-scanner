@@ -1,13 +1,12 @@
 # Gestione dell'interfaccia grafica con PyQt6
+
 import shutil
-# gui.py
-import sys
 import os
 from PyQt6.QtGui import QIcon
 from PyQt6.QtWidgets import QApplication, QWidget, QVBoxLayout, QPushButton, QTextEdit, QLabel, QLineEdit, QFileDialog, \
     QMessageBox, QMenuBar, QMenu, QComboBox, QCheckBox, QHBoxLayout
-from file_utils import scan_dir, copy_files
 from config import autore, versione, icona
+from file_utils import scan_dir
 
 class FileScannerApp(QWidget):
     def __init__(self):
@@ -18,7 +17,10 @@ class FileScannerApp(QWidget):
         self.setWindowTitle("File Scanner & Copier")
         self.setGeometry(150, 150, 640, 450)
         self.setFixedSize(640, 450)
-        self.setWindowIcon(QIcon(r"lock.ico"))
+
+        base_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))  # Cartella dello script
+        ico_path = os.path.join(base_path, "assets", "github.ico")
+        self.setWindowIcon(QIcon(ico_path))
 
         # Applica il foglio di stile (QSS)
         self.setStyleSheet("""
@@ -49,6 +51,7 @@ class FileScannerApp(QWidget):
                        background-color: #6F7F90;
                        font-size: 14px;
                    }
+
                """)
 
         layout = QVBoxLayout()
@@ -76,20 +79,20 @@ class FileScannerApp(QWidget):
         input_layout.addWidget(self.browse_input_button)
         layout.addLayout(input_layout)
 
-        comune_layout = QHBoxLayout()
-        self.comune_label = QLabel("Nome comune:")
-        comune_layout.addWidget(self.comune_label)
-        self.comune_input = QLineEdit()
-        self.comune_input.setFixedWidth(496)
-        comune_layout.addWidget(self.comune_input)
-        layout.addLayout(comune_layout)
+        prefisso_layout = QHBoxLayout()
+        self.prefisso_label = QLabel("Prefisso:")
+        prefisso_layout.addWidget(self.prefisso_label)
+        self.prefisso_input = QLineEdit()
+        self.prefisso_input.setFixedWidth(496)
+        prefisso_layout.addWidget(self.prefisso_input)
+        layout.addLayout(prefisso_layout)
 
         check_layout = QHBoxLayout()
         check_layout.addSpacing(123)
-        self.check_comune = QCheckBox("Includere nome Comune")
-        self.check_comune.setChecked(True)
-        self.check_comune.stateChanged.connect(self.checkbox_changed)
-        check_layout.addWidget(self.check_comune)
+        self.check_prefisso = QCheckBox("Includere prefisso")
+        self.check_prefisso.setChecked(True)
+        self.check_prefisso.stateChanged.connect(self.checkbox_changed)
+        check_layout.addWidget(self.check_prefisso)
         layout.addLayout(check_layout)
 
         key_layout = QHBoxLayout()
@@ -194,25 +197,25 @@ class FileScannerApp(QWidget):
     def clear_fields(self):
         # Pulisce i campi di input
         self.input_path.clear()
-        self.comune_input.clear()
+        self.prefisso_input.clear()
         self.key_input.clear()
         self.output_path.clear()
         self.combo_box.setCurrentIndex(0)  # Imposta la combo box al primo elemento (default)
-        self.check_comune.setChecked(True)  # Ripristina il checkbox a "selezionato"
+        self.check_prefisso.setChecked(True)  # Ripristina il checkbox a "selezionato"
 
         # Svuota il log
         self.log_text.clear()
 
     def start_scan(self):
         path = self.input_path.text().strip()
-        comune = self.comune_input.text().strip()
+        prefisso = self.prefisso_input.text().strip()
         key = self.key_input.text().strip()
         path_out = self.output_path.text().strip()
         patt = self.combo_box.currentText().strip()
-        check = self.check_comune.isChecked()
+        check = self.check_prefisso.isChecked()
 
         if check:
-            if not all([path, comune, key, path_out]):
+            if not all([path, prefisso, key, path_out]):
                 self.log("Errore: tutti i campi devono essere compilati.")
                 return
 
@@ -228,10 +231,10 @@ class FileScannerApp(QWidget):
 
         diz_out = {}
         self.log("Avvio scansione...")
-        self.log(f"Includere nome Comune: {check}")
+        self.log(f"Includere prefisso: {check}")
         self.log(f"Pattern usato: {patt}")
 
-        self.scan_dir(path, comune, key, diz_out, patt, check)
+        scan_dir(path, prefisso, key, diz_out, patt, check, self.log_text)
 
         self.log("\nTUTTI GLI ELEMENTI SONO STATI CONTROLLATI")
         self.log(f"Sono stati trovati {len(diz_out)} file\n")
@@ -244,3 +247,5 @@ class FileScannerApp(QWidget):
             self.log('')
 
         self.log("Processo TERMINATO!!!")
+        self.log('-----------------------------------------------------------------------------------------------')
+        self.log('')
