@@ -110,12 +110,26 @@ class FileScannerApp(QWidget):
         self.combo_box = QComboBox(self)
         self.combo_box.setFixedWidth(496)
         self.combo_box.addItems(
-            ["Anno-Mese-Giorno-Orario", "Anno-Mese-Giorno", "Numerico", "Indice progressivo", "Indice random",
+            ["Anno-Mese-Giorno-Orario", "Anno-Mese-Giorno", "Numerico", "Indice progressivo", "Indice random", "Personalizzato",
              "Nessuno"])
         self.combo_box.setStyleSheet("QComboBox { text-align: center; }")
         self.combo_box.setCurrentIndex(self.combo_box.count() - 1)
         combo_layout.addWidget(self.combo_box)
         layout.addLayout(combo_layout)
+
+        personalized_layout = QHBoxLayout()
+        self.personalized_label = QLabel("Inserire pattern:")
+        personalized_layout.addWidget(self.personalized_label)
+        self.personalized_input = QLineEdit()
+        self.personalized_input.setFixedWidth(494)
+        personalized_layout.addWidget(self.personalized_input)
+        self.personalized_label.setVisible(False)
+        self.personalized_input.setVisible(False)
+        layout.addLayout(personalized_layout)
+
+        # Segnale per cambiare visibilità della QLineEdit
+        self.combo_box.currentTextChanged.connect(self.toggle_line_edit)
+
 
         output_layout = QHBoxLayout()
         self.output_path_label = QLabel("Percorso di output:")
@@ -150,6 +164,15 @@ class FileScannerApp(QWidget):
         layout.addLayout(button_layout)
 
         self.setLayout(layout)
+
+    def toggle_line_edit(self, text):
+        """Mostra la QLineEdit solo se viene selezionata una certa opzione."""
+        if text == "Personalizzato":  # Cambia "Altro" con l'opzione desiderata
+            self.personalized_label.setVisible(True)
+            self.personalized_input.setVisible(True)
+        else:
+            self.personalized_label.setVisible(False)
+            self.personalized_input.setVisible(False)
 
     def browse_input(self):
         path = QFileDialog.getExistingDirectory(self, "Seleziona Cartella di Input")
