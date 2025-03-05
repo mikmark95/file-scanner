@@ -26,4 +26,8 @@ def azione(pattern, entry_path):
         case _:
             return ''
 
+    if regex == r"\\(\d{1,2}?)\\":
+        matches = re.findall(r"(?<=\\)(\d+)(?=\\)", entry_path)
+        return matches[-1] if matches else ''
+
     return re.findall(regex, entry_path)[0] if re.findall(regex, entry_path) else ''
