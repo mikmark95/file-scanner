@@ -8,7 +8,7 @@ Richiede l'inserimento di alcuni dati:
 
 
 - **Percorso di input** → Indicazione della cartella da dove iniziare a cercare ricorsivamente, cioè a partire dal livello attuale, scedendo e controllando in tutte le sotto-cartelle.
-- **Prefisso** → Prefisso che dovrà essere presente sul nome dei files che verrano copiati.
+- **Prefisso** → Prefisso che dovrà essere presente sul nome dei files che verrano copiati. (Facoltativo, tramite checkbox specifica)
 - **Chiave di ricerca** → Chiave che deve essere presente sul nome dei files che stiamo cercando, può essere un estensione o una sotto-stringa.
 - **Seleziona Pattern** → Modello che deve essere ricercato all'interno dei percorsi dei files, che sono stati selezionati mediante la chiave di ricerca, ed inserito nel nome del file copiato.
 - **Percorso di output** → La cartella di destinazione, dove andranno inseriti i files copiati e rinominati.
