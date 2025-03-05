@@ -6,6 +6,12 @@ import random
 
 contatore = 0
 
+def crea_regex_con_escape(s: str) -> str:
+    """
+    Ritorna una regex che cerca una sottostringa che inizia con la stringa s (con i caratteri speciali opportunamente escapeati)
+    e prosegue fino al prossimo backslash.
+    """
+    return re.escape(s) + r"[^\\]*"
 
 def azione(pattern, entry_path):
     global contatore
