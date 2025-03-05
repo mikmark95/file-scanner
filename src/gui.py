@@ -113,6 +113,7 @@ class FileScannerApp(QWidget):
             ["Anno-Mese-Giorno-Orario", "Anno-Mese-Giorno", "Numerico", "Indice progressivo", "Indice random",
              "Nessuno"])
         self.combo_box.setStyleSheet("QComboBox { text-align: center; }")
+        self.combo_box.setCurrentIndex(self.combo_box.count() - 1)
         combo_layout.addWidget(self.combo_box)
         layout.addLayout(combo_layout)
 
