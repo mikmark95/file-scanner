@@ -1,4 +1,4 @@
 #File che contiene informazioni dell autore e versione
 
 autore = "Michele Marchetti"
-versione = "1.9"
+versione = "2.0"
