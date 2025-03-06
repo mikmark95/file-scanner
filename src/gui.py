@@ -54,6 +54,11 @@ class FileScannerApp(QWidget):
                        background-color: #6F7F90;
                        font-size: 14px;
                    }
+                   QMenu::item {
+                       background-color: #6F7F90;  
+                       color: white;  
+                       padding: 5px;  
+                   }
 
                """)
 
