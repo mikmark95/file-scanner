@@ -30,7 +30,7 @@ def azione(pattern, entry_path):
         case "Nessuno":
             return 'vuoto'
         case _:
-            return ''
+            return crea_regex_con_escape(pattern)
 
     if regex == r"\\(\d{1,2}?)\\":
         matches = re.findall(r"(?<=\\)(\d+)(?=\\)", entry_path)
