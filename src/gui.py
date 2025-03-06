@@ -82,7 +82,6 @@ class FileScannerApp(QWidget):
         update_action = update_menu.addAction("Verifica aggiornamento")
         update_action.triggered.connect(self.check_update)
 
-
         layout.setMenuBar(menubar)
 
         input_layout = QHBoxLayout()
@@ -182,8 +181,9 @@ class FileScannerApp(QWidget):
         self.setLayout(layout)
 
     def check_update(self):
-        """Funzione che lancia il controllo del ultima versione del programma"""
-        check_version()
+        """Chiama il controllo aggiornamenti con il contesto della finestra principale."""
+        check_version(self)
+
     def send_email(self):
         """Apre il client email predefinito con un template precompilato."""
         destinatario = "michele-marchetti@hotmail.it"
