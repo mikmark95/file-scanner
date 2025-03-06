@@ -15,7 +15,7 @@ def start_main():
 
     # Centra la finestra principale prima di mostrarla
     center_widget(app, main_window)
-
+    check_version()
     # Mostra la finestra principale
     main_window.show()
 
@@ -34,5 +34,4 @@ if __name__ == "__main__":
 
     # Avvia la GUI dopo 3 secondi
     QTimer.singleShot(3000, start_main)
-    check_version()
     sys.exit(app.exec())
