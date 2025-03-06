@@ -9,7 +9,7 @@ def up_to_date(remote_version):
     #Funzione che mostra una finestra di dialogo se l'applicazione e' gia' aggiornata all utilma versione
     app = QApplication(sys.argv)
     window = QWidget()
-    message = QMessageBox.question(window, 'Aggiornamento software', f"Ultima versione {remote_version} gia' installata", QMessageBox.StandardButton.Close)
+    message = QMessageBox.information(window, 'Aggiornamento software', f"Ultima versione {remote_version} gia' installata", QMessageBox.StandardButton.Ok)
     sys.exit(app.exec())
 
 def ask_update(remote_version):
