@@ -11,8 +11,12 @@ class SplashScreen(QWidget):
         # 🔹 Rendi la finestra senza bordi e sempre in primo piano
         self.setWindowFlags(Qt.WindowType.FramelessWindowHint | Qt.WindowType.WindowStaysOnTopHint)
 
-        # 🔹 Trova il percorso della GIF
-        base_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))  # Cartella dello script
+        # 🔹 Trova il percorso della GIF, compatibile con PyInstaller
+        if getattr(sys, 'frozen', False):
+            base_path = sys._MEIPASS  # Quando eseguito da PyInstaller
+        else:
+            base_path = os.path.dirname(os.path.abspath(__file__))  # Quando eseguito normalmente
+
         gif_path = os.path.join(base_path, "assets", "splash.gif")
 
         # 🔹 Verifica che il file esista
@@ -57,3 +61,5 @@ if __name__ == "__main__":
     QTimer.singleShot(3000, splash.close_splash)
 
     sys.exit(app.exec())
+
+
