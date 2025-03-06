@@ -2,6 +2,7 @@
 
 import shutil
 import os
+import sys
 import webbrowser
 import requests
 from PyQt6.QtGui import QIcon
@@ -9,6 +10,7 @@ from PyQt6.QtWidgets import QApplication, QWidget, QVBoxLayout, QPushButton, QTe
     QMessageBox, QMenuBar, QMenu, QComboBox, QCheckBox, QHBoxLayout, QSystemTrayIcon
 from config import autore, versione, icona
 from file_utils import scan_dir
+from update_checker import check_version
 
 class FileScannerApp(QWidget):
     def __init__(self):
@@ -75,6 +77,10 @@ class FileScannerApp(QWidget):
         supporto_menu = menubar.addMenu("Supporto")
         supporto_action = supporto_menu.addAction("Invia Mail")
         supporto_action.triggered.connect(self.send_email)
+
+        update_menu = menubar.addMenu("Aggiornamento")
+        update_action = update_menu.addAction("Verifica aggiornamento")
+        update_action.triggered.connect(self.check_update)
 
 
         layout.setMenuBar(menubar)
@@ -175,6 +181,9 @@ class FileScannerApp(QWidget):
 
         self.setLayout(layout)
 
+    def check_update(self):
+        """Funzione che lancia il controllo del ultima versione del programma"""
+        check_version()
     def send_email(self):
         """Apre il client email predefinito con un template precompilato."""
         destinatario = "michele-marchetti@hotmail.it"
