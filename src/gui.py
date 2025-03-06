@@ -220,8 +220,11 @@ class FileScannerApp(QWidget):
         self.prefisso_input.clear()
         self.key_input.clear()
         self.output_path.clear()
-        self.combo_box.setCurrentIndex(0)  # Imposta la combo box al primo elemento (default)
+        self.combo_box.setCurrentIndex(self.combo_box.count() - 1)  # Imposta la combo box al primo elemento (default)
         self.check_prefisso.setChecked(True)  # Ripristina il checkbox a "selezionato"
+        self.personalized_input.clear()
+
+
 
         # Svuota il log
         self.log_text.clear()
@@ -233,6 +236,8 @@ class FileScannerApp(QWidget):
         path_out = self.output_path.text().strip()
         patt = self.combo_box.currentText().strip()
         check = self.check_prefisso.isChecked()
+        if self.personalized_input.isVisible():
+            patt = self.personalized_input.text().strip()
 
         if check:
             if not all([path, prefisso, key, path_out]):
