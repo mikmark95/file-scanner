@@ -67,6 +67,11 @@ class FileScannerApp(QWidget):
         about_action = info_menu.addAction("Versione")
         about_action.triggered.connect(self.show_about)
 
+        supporto_menu = menubar.addMenu("Supporto")
+        supporto_action = supporto_menu.addAction("Invia Mail")
+        supporto_action.triggered.connect(self.send_email)
+
+
         layout.setMenuBar(menubar)
 
         input_layout = QHBoxLayout()
@@ -164,6 +169,19 @@ class FileScannerApp(QWidget):
         layout.addLayout(button_layout)
 
         self.setLayout(layout)
+
+    def send_email(self):
+        """Apre il client email predefinito con un template precompilato."""
+        destinatario = "michele-marchetti@hotmail.it"
+        oggetto = "Report Bug - FILE SCANNER"
+        corpo = "Ciao,\n\nHo riscontrato il seguente bug:\n\n[Spiegazione Sommaria Bug]\n\n[Cosa stavi cercando mentre si è presentato il bug]\n\n[ESEMPIO PARAMETRI INSERITI]\n\nSaluti!"
+
+        # Formattazione della stringa mailto (sostituire gli spazi con %20 e le nuove righe con %0A)
+        mailto_link = f"mailto:{destinatario}?subject={oggetto}&body={corpo}".replace(" ", "%20").replace("\n", "%0A")
+
+        # Aprire il client di posta
+        webbrowser.open(mailto_link)
+
 
     def toggle_line_edit(self, text):
         """Mostra la QLineEdit solo se viene selezionata una certa opzione."""
