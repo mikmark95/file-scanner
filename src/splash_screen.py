@@ -15,7 +15,7 @@ class SplashScreen(QWidget):
         if getattr(sys, 'frozen', False):
             base_path = sys._MEIPASS  # Quando eseguito da PyInstaller
         else:
-            base_path = os.path.dirname(os.path.abspath(__file__))  # Quando eseguito normalmente
+            base_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))  # Quando eseguito normalmente
 
         gif_path = os.path.join(base_path, "assets", "splash.gif")
 
