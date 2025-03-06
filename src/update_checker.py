@@ -1,74 +1,55 @@
-import sys
 import requests
 import webbrowser
-from PyQt6.QtWidgets import QApplication, QWidget, QMessageBox
+from PyQt6.QtWidgets import QMessageBox
 from config import versione  # Assicurati che 'versione' sia definita in config.py
 
 
-def up_to_date(remote_version):
-    #Funzione che mostra una finestra di dialogo se l'applicazione e' gia' aggiornata all utilma versione
-    app = QApplication(sys.argv)
-    window = QWidget()
-    message = QMessageBox.information(window, 'Aggiornamento software', f"Ultima versione {remote_version} gia' installata", QMessageBox.StandardButton.Ok)
-    sys.exit(app.exec())
+def up_to_date(remote_version, parent=None):
+    """Mostra una finestra di dialogo se l'applicazione è già aggiornata."""
+    QMessageBox.information(
+        parent,  # Usa la finestra principale come parent
+        "Aggiornamento software",
+        f"L'ultima versione ({remote_version}) è già installata.",
+        QMessageBox.StandardButton.Ok
+    )
 
-def ask_update(remote_version):
-    # Funzione per mostrare una finestra di dialogo con la richiesta di aggiornamento
 
-    # Crea una finestra di applicazione (necessaria per l'interfaccia grafica)
-    app = QApplication(sys.argv)
-
-    # Crea una finestra principale (questa finestra non verrà visualizzata)
-    window = QWidget()
-
-    # Crea una finestra di dialogo (MessageBox) per chiedere all'utente se vuole aggiornare
+def ask_update(remote_version, parent=None):
+    """Mostra una finestra di dialogo per l'aggiornamento disponibile."""
     reply = QMessageBox.question(
-        window,  # La finestra principale (non visibile)
-        "Nuova versione disponibile",  # Titolo della finestra
-        f"Una nuova versione ({remote_version}) è disponibile. Vuoi aggiornare?",  # Messaggio
-        QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No,  # Opzioni di risposta
+        parent,  # Usa la finestra principale come parent
+        "Nuova versione disponibile",
+        f"Una nuova versione ({remote_version}) è disponibile. Vuoi aggiornare?",
+        QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No,
         QMessageBox.StandardButton.No  # Imposta "No" come predefinito
     )
 
-    # Se l'utente clicca "Sì"
     if reply == QMessageBox.StandardButton.Yes:
-        download_url = "https://github.com/mikmark95/file-scanner/releases/latest"  # Modifica con il tuo URL di release
+        download_url = "https://github.com/mikmark95/file-scanner/releases/latest"
         print(f"Visita questa pagina per scaricare l'ultima versione: {download_url}")
         webbrowser.open(download_url)  # Apre il browser con l'URL di download
     else:
         print("L'aggiornamento è stato annullato.")
 
-    sys.exit(app.exec())  # Avvia l'applicazione PyQt6 e chiudi quando l'utente risponde
 
-
-def check_version():
-    # Versione attuale del programma (locale)
+def check_version(parent=None):
+    """Controlla la versione e avvisa l'utente se è disponibile un aggiornamento."""
     current_version = versione
-
-    # URL del repository GitHub che contiene il file config.py
     repo_url = "https://raw.githubusercontent.com/mikmark95/file-scanner/main/src/config.py"
 
-    # Fai una richiesta HTTP per ottenere il file config.py dal repository GitHub
     response = requests.get(repo_url)
 
     if response.status_code == 200:
-        # Leggi la versione dal file configurazione su GitHub
         remote_config = response.text
         start_index = remote_config.find('versione = "') + len('versione = "')
         end_index = remote_config.find('"', start_index)
         remote_version = remote_config[start_index:end_index]
 
-        # Confronta la versione corrente con quella remota
         if current_version != remote_version:
-            print(f"Attenzione! Una nuova versione ({remote_version}) è disponibile.")
-            # Creiamo la finestra di dialogo per chiedere se vogliono aggiornare
-            ask_update(remote_version)
+            print(f"⚠️ Attenzione! Una nuova versione ({remote_version}) è disponibile.")
+            ask_update(remote_version, parent)
         else:
-            print(f"Il programma è aggiornato alla versione {remote_version}.")
-            up_to_date(remote_version)
+            print(f"✅ Il programma è aggiornato alla versione {remote_version}.")
+            up_to_date(remote_version, parent)
     else:
-        print("Errore nel recuperare il file di configurazione da GitHub.")
-
-
-if __name__ == "__main__":
-    check_version()
+        print("❌ Errore nel recuperare il file di configurazione da GitHub.")
