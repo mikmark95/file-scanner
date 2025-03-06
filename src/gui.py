@@ -2,6 +2,8 @@
 
 import shutil
 import os
+import webbrowser
+import requests
 from PyQt6.QtGui import QIcon
 from PyQt6.QtWidgets import QApplication, QWidget, QVBoxLayout, QPushButton, QTextEdit, QLabel, QLineEdit, QFileDialog, \
     QMessageBox, QMenuBar, QMenu, QComboBox, QCheckBox, QHBoxLayout, QSystemTrayIcon
@@ -60,12 +62,10 @@ class FileScannerApp(QWidget):
         # Creazione della barra menu
         menubar = QMenuBar(self)
         info_menu = menubar.addMenu("Info")
-        about_action = info_menu.addAction("Informazioni")
+        guida_action = info_menu.addAction("Guida")
+        guida_action.triggered.connect(self.guida_function)
+        about_action = info_menu.addAction("Versione")
         about_action.triggered.connect(self.show_about)
-
-        funzione_menu = menubar.addMenu("Funzione")
-        function_action = funzione_menu.addAction("Descrizione")
-        function_action.triggered.connect(self.show_function)
 
         layout.setMenuBar(menubar)
 
@@ -191,14 +191,9 @@ class FileScannerApp(QWidget):
     def show_about(self):
         QMessageBox.information(self, "Informazioni", f"File Scanner & Copier\nVersione: {versione}\nAutore: {autore}")
 
-    def show_function(self):
-        QMessageBox.information(self, "Funzione",
-                                ""
-                                "Programma che serve per ricercare ricorsivamente all'interno di un percorso di input, tutti i file che contengono le chiavi di ricerca nel nome."
-                                "\nSe checkbox attivata restituisce i file rinominati nel seguente modo:"
-                                "\n\t---> (nome_comune)_(Pattern)_file."
-                                "\n Altrimenti:"
-                                "\n\t---> (Pattern)_file")
+    def guida_function(self):
+        webbrowser.open_new(r"https://github.com/mikmark95/file-scanner/blob/main/README.md")
+
 
     def checkbox_changed(self, state):
         if state == 2:  # Qt.Checked è rappresentato dal valore 2
