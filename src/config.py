@@ -1,4 +1,4 @@
 # config.py
 autore = "Michele Marchetti"
-versione = "1.9"
-icona = "assets/lock.ico"
+versione = "2.0"
+icona = "assets/github.ico"
