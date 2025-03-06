@@ -10,7 +10,7 @@ from splash_screen import SplashScreen  # Importa la nuova classe SplashScreen
 def start_main():
     global main_window
     splash.close()  # Chiude manualmente lo splash screen
-    check_version()  # Eseguiamo il controllo della versione prima di aprire la GUI
+    # check_version()  # Eseguiamo il controllo della versione prima di aprire la GUI
     main_window = FileScannerApp()
 
     # Centra la finestra principale prima di mostrarla
@@ -34,5 +34,5 @@ if __name__ == "__main__":
 
     # Avvia la GUI dopo 3 secondi
     QTimer.singleShot(3000, start_main)
-
+    check_version()
     sys.exit(app.exec())
