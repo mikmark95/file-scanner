@@ -267,9 +267,13 @@ class FileScannerApp(QWidget):
 
         for chiave, elem in diz_out.items():
             dest = os.path.join(path_out, chiave)
-            shutil.copy2(elem, dest)
-            self.log(f"Copia in corso: {elem} --> {dest}")
-            self.log('')
+            try:
+                shutil.copy2(elem, dest)
+                self.log(f"Copia in corso: {elem} --> {dest}")
+                self.log('')
+            except Exception as e:
+                print(f"Errore: {e}")
+                print(f'Probailmente Patter Personalizzato ERRATO')
 
         self.log("Processo TERMINATO!!!")
         self.log('-----------------------------------------------------------------------------------------------')
