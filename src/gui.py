@@ -258,7 +258,7 @@ class FileScannerApp(QWidget):
         self.log("Avvio scansione...")
         self.log(f"Includere prefisso: {check}")
         self.log(f"Pattern usato: {patt}")
-
+        self.log(f"Scansione file in corso...")
         scan_dir(path, prefisso, key, diz_out, patt, check, self.log_text)
 
         self.log("\nTUTTI GLI ELEMENTI SONO STATI CONTROLLATI")
