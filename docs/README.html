@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="it">
+  <head>
+    <meta charset="UTF-8">
+    <title>File Scanner &amp; Copier</title>
+  </head>
+  <body>
+    <h1>File Scanner &amp; Copier</h1>
+
+    <h4>
+      Software che serve a ricercare ricorsivamente files tramite una chiave di ricerca e li copia in una cartella di destinazione, rinominandoli in base alla scelta di uno specifico pattern.
+    </h4>
+    <h4>
+      Il risultato sarà un insieme di file rinominato come segue: <em>Prefisso_Pattern_File</em>
+    </h4>
+
+    <p>Richiede l'inserimento di alcuni dati:</p>
+    <ul>
+      <li>
+        <strong>Percorso di input</strong> → Indicazione della cartella da dove iniziare a cercare ricorsivamente, cioè a partire dal livello attuale, scendendo e controllando in tutte le sotto-cartelle.
+      </li>
+      <li>
+        <strong>Prefisso</strong> → Prefisso che dovrà essere presente sul nome dei files che verrano copiati.
+      </li>
+      <li>
+        <strong>Chiave di ricerca</strong> → Chiave che deve essere presente sul nome dei files che stiamo cercando, può essere un'estensione o una sotto-stringa.
+      </li>
+      <li>
+        <strong>Seleziona Pattern</strong> → Modello che deve essere ricercato all'interno dei percorsi dei files, che sono stati selezionati mediante la chiave di ricerca, ed inserito nel nome del file copiato.
+      </li>
+      <li>
+        <strong>Percorso di output</strong> → La cartella di destinazione, dove andranno inseriti i files copiati e rinominati.
+      </li>
+    </ul>
+
+    <p>Spiegazione pulsanti interfaccia:</p>
+    <ul>
+      <li>
+        <em>Avvia</em>: Questo bottone avvia tutto il processo.
+      </li>
+      <li>
+        <em>Salva log</em>: Questo bottone fa in modo di salvare tutti i messaggi del log in un file .txt, salvato nella posizione decisa dall'utente.
+      </li>
+      <li>
+        <em>Pulisci</em> → Questo bottone pulisce tutti i campi dell'interfaccia, compresa la zona del log.
+      </li>
+    </ul>
+
+    <h2>Usage/Examples</h2>
+    <p>
+      La cosa principale da fare in modo preventivo è analizzare il <em>PATH ASSOLUTO</em> di uno dei files che vogliamo copiare, ed successivamente andiamo a selezionare il <em>PATTERN</em> idoneo.
+    </p>
+    <p>
+      In base al pattern selezionato si effettua una ricerca nel path del file, letto come stringa, per estrapolare una sottostringa che individua univocamente il file.
+    </p>
+    <p>Di seguito la spiegazione dettagliata dei pattern:</p>
+
+    <h4>ANNO-MESE-GIORNO-ORARIO</h4>
+    <p>
+      Es.→ <code>\\60_output3D\grecia\Mykonos integrazione Backpack\11-01-2025\output data\ResultData<strong>2025-01-11-170051</strong>_0\ 2025-01-11-170051\img_traj.csv</code>
+    </p>
+    <p>
+      <em>Seleziona la prima occorrenza presente nel percorso che ha questo formato</em>
+    </p>
+
+    <h4>ANNO-MESE-GIORNO</h4>
+    <p>
+      Es.→ <code>20_SVILUPPO\60_output3D\grecia\Rethimno Backpack\ <strong>13-12-2024</strong>\R1\R01-2020-12-26_01-19-51.las</code>
+    </p>
+    <p>
+      <em>Seleziona la prima occorrenza presente nel percorso che ha questo formato</em>
+    </p>
+
+    <h4>NUMERICO</h4>
+    <p>
+      Es. → <code>\\192.168.199.10\Deposito3\20_SVILUPPO\60_output3D\grecia\Karditsa Z1\Panoramics\1\ <strong>11</strong>\Record001\Record001, Record001, LB6, Ladybug.csv</code>
+    </p>
+    <p>
+      <em>Seleziona il gradino più profondo della directory che è formato solo da cifre</em>
+    </p>
+
+    <h4>INDICE PROGRESSIVO</h4>
+    <p>
+      Rinomina i file in {PREFISSO}_____{PROGRESSIVO}____{NOME FILE}
+    </p>
+    <p>
+      <em>Dove progressivo è un numero che parte da 1 e viene incrementato per ogni file</em>
+    </p>
+
+    <h4>INDICE RANDOM</h4>
+    <p>
+      Rinomina i file in {PREFISSO}_____{RANDOM}____{NOME FILE}
+    </p>
+    <p>
+      <em>Dove Random è un numero di 4 cifre generato in modo casuale</em>
+    </p>
+
+    <h4>NESSUNO</h4>
+    <p>
+      Non utilizza pattern particolari, semplicemente copia tutti i file che trova nel percorso di input che rispettano il criterio di ricerca e li copia nella cartella di destinazione
+    </p>
+
+    <h2>Authors</h2>
+    <ul>
+      <li>
+        <a href="https://github.com/mikmark95">@mikmark95</a>
+      </li>
+    </ul>
+
+    <h2>License</h2>
+    <p>
+      <a href="https://raw.githubusercontent.com/mikmark95/file-scanner/refs/heads/main/LICENSE">Personal</a>
+    </p>
+  </body>
+</html>
