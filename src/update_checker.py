@@ -4,32 +4,13 @@ import webbrowser
 from PyQt6.QtWidgets import QApplication, QWidget, QMessageBox
 from config import versione  # Assicurati che 'versione' sia definita in config.py
 
-def check_version():
-    # Versione attuale del programma (locale)
-    current_version = versione
 
-    # URL del repository GitHub che contiene il file config.py
-    repo_url = "https://raw.githubusercontent.com/mikmark95/file-scanner/main/src/config.py"
-
-    # Fai una richiesta HTTP per ottenere il file config.py dal repository GitHub
-    response = requests.get(repo_url)
-
-    if response.status_code == 200:
-        # Leggi la versione dal file configurazione su GitHub
-        remote_config = response.text
-        start_index = remote_config.find('versione = "') + len('versione = "')
-        end_index = remote_config.find('"', start_index)
-        remote_version = remote_config[start_index:end_index]
-
-        # Confronta la versione corrente con quella remota
-        if current_version != remote_version:
-            print(f"Attenzione! Una nuova versione ({remote_version}) è disponibile.")
-            # Creiamo la finestra di dialogo per chiedere se vogliono aggiornare
-            ask_update(remote_version)
-        else:
-            print(f"Il programma è aggiornato alla versione {remote_version}.")
-    else:
-        print("Errore nel recuperare il file di configurazione da GitHub.")
+def up_to_date(remote_version):
+    #Funzione che mostra una finestra di dialogo se l'applicazione e' gia' aggiornata all utilma versione
+    app = QApplication(sys.argv)
+    window = QWidget()
+    message = QMessageBox.question(window, 'Aggiornamento software', f"Ultima versione {remote_version} gia' installata", QMessageBox.StandardButton.Close)
+    sys.exit(app.exec())
 
 def ask_update(remote_version):
     # Funzione per mostrare una finestra di dialogo con la richiesta di aggiornamento
@@ -58,6 +39,36 @@ def ask_update(remote_version):
         print("L'aggiornamento è stato annullato.")
 
     sys.exit(app.exec())  # Avvia l'applicazione PyQt6 e chiudi quando l'utente risponde
+
+
+def check_version():
+    # Versione attuale del programma (locale)
+    current_version = versione
+
+    # URL del repository GitHub che contiene il file config.py
+    repo_url = "https://raw.githubusercontent.com/mikmark95/file-scanner/main/src/config.py"
+
+    # Fai una richiesta HTTP per ottenere il file config.py dal repository GitHub
+    response = requests.get(repo_url)
+
+    if response.status_code == 200:
+        # Leggi la versione dal file configurazione su GitHub
+        remote_config = response.text
+        start_index = remote_config.find('versione = "') + len('versione = "')
+        end_index = remote_config.find('"', start_index)
+        remote_version = remote_config[start_index:end_index]
+
+        # Confronta la versione corrente con quella remota
+        if current_version != remote_version:
+            print(f"Attenzione! Una nuova versione ({remote_version}) è disponibile.")
+            # Creiamo la finestra di dialogo per chiedere se vogliono aggiornare
+            ask_update(remote_version)
+        else:
+            print(f"Il programma è aggiornato alla versione {remote_version}.")
+            up_to_date(remote_version)
+    else:
+        print("Errore nel recuperare il file di configurazione da GitHub.")
+
 
 if __name__ == "__main__":
     check_version()
