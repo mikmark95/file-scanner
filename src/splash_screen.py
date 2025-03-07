@@ -1,8 +1,10 @@
 import sys
 import os
-from PyQt6.QtWidgets import QApplication, QLabel, QWidget, QVBoxLayout
-from PyQt6.QtGui import QMovie
-from PyQt6.QtCore import Qt, QTimer
+from PyQt6.QtWidgets import QApplication, QWidget, QVBoxLayout
+from PyQt6.QtMultimedia import QMediaPlayer, QAudioOutput
+from PyQt6.QtMultimediaWidgets import QVideoWidget
+from PyQt6.QtCore import Qt, QUrl
+
 
 class SplashScreen(QWidget):
     def __init__(self):
@@ -10,56 +12,57 @@ class SplashScreen(QWidget):
 
         # 🔹 Rendi la finestra senza bordi e sempre in primo piano
         self.setWindowFlags(Qt.WindowType.FramelessWindowHint | Qt.WindowType.WindowStaysOnTopHint)
+        self.setFixedSize(640,450)
 
-        # 🔹 Trova il percorso della GIF, compatibile con PyInstaller
+        # 🔹 Trova il percorso del video, compatibile con PyInstaller
         if getattr(sys, 'frozen', False):
             base_path = sys._MEIPASS  # Quando eseguito da PyInstaller
         else:
             base_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))  # Quando eseguito normalmente
 
-        gif_path = os.path.join(base_path, "assets", "splash.gif")
+        video_path = os.path.join(base_path, "assets", "splash.mp4")
 
         # 🔹 Verifica che il file esista
-        if not os.path.exists(gif_path):
-            print(f"❌ Errore: GIF non trovata! Percorso: {gif_path}")
+        if not os.path.exists(video_path):
+            print(f"❌ Errore: Video non trovato! Percorso: {video_path}")
             return
 
-        # 🔹 Creazione di una QLabel per mostrare la GIF animata
-        self.label = QLabel(self)
-        self.movie = QMovie(gif_path)  # Creiamo un oggetto QMovie per la GIF
+        # 🔹 Creazione del player video
+        self.video_widget = QVideoWidget(self)
+        self.video_widget.setStyleSheet("background: transparent;")
 
-        # ✅ Verifica che la GIF sia valida
-        if not self.movie.isValid():
-            print("❌ Errore: GIF non valida!")
-            return
+        self.player = QMediaPlayer()
+        self.audio_output = QAudioOutput()
+        self.player.setAudioOutput(self.audio_output)
+        self.player.setVideoOutput(self.video_widget)
+        self.player.setSource(QUrl.fromLocalFile(video_path))
 
-        # ✅ Imposta la GIF su QLabel e avviala
-        self.label.setMovie(self.movie)
-        self.movie.setCacheMode(QMovie.CacheMode.CacheAll)  # Usa cache per evitare lag
-        self.movie.setSpeed(100)  # Imposta la velocità normale
-        self.movie.start()  # Avvia la GIF
+        # ✅ Avvia il video
+        self.player.play()
 
         # 🔹 Imposta il layout
         layout = QVBoxLayout(self)
-        layout.addWidget(self.label)
+        layout.addWidget(self.video_widget)
         self.setLayout(layout)
 
-        # ✅ Imposta la dimensione della finestra alla dimensione della GIF
-        self.resize(self.movie.frameRect().size())
+        # ✅ Imposta la dimensione della finestra
+        self.resize(640, 450)  # Puoi modificare in base al video
+
+        # ✅ Chiudi lo splash screen alla fine del video
+        self.player.mediaStatusChanged.connect(self.on_video_finished)
+
+    def on_video_finished(self, status):
+        if status == QMediaPlayer.MediaStatus.EndOfMedia:
+            self.close_splash()
 
     def close_splash(self):
         """Chiude lo splash screen."""
-        self.movie.stop()  # Ferma la GIF prima di chiudere
+        self.player.stop()
         self.close()
+
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
     splash = SplashScreen()
     splash.show()
-
-    # ✅ Usa QTimer per chiudere lo splash dopo 3 secondi SENZA bloccare l'interfaccia
-    QTimer.singleShot(3000, splash.close_splash)
-
     sys.exit(app.exec())
-
-
