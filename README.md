@@ -57,6 +57,12 @@ Di seguito la spiegazione dettagliata dei pattern:
     Rinomina i file in {PREFISSO}_____{RANDOM}____{NOME FILE}
     
     *Dove Random è un numero di 4 cifre generato in modo casuale*
+
+- #### PERSONALIZZATO
+    Utilizza un pattern personalizzato inserito dall utente. La ricerca del pattern avviente sul percorso assoluto dei files che vogliamo analizzare, se inseriamo come pattern '*file*' andremo ad usare come modello il gradino di directory che conterra quella sotto-stringa
+    
+    Es → C:\Users\emmes\Documents\Python Scripts\ __file-scanner__\src\build\main\warn-main.txt
+
 - #### NESSUNO
     Non utilizza pattern particolari, semplicemente copia tutti i file che trova nel percorso di input che rispettano il criterio di ricerca e li copia nella cartella di destinazione
 
@@ -71,4 +77,3 @@ Di seguito la spiegazione dettagliata dei pattern:
 ## License
 
 [Personal](https://raw.githubusercontent.com/mikmark95/file-scanner/refs/heads/main/LICENSE)
-
