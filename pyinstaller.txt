@@ -1,1 +1,1 @@
-pyinstaller --noconsole --onefile --windowed --icon=../assets/github.ico --add-data "../assets/splash.gif;assets" main.py
+pyinstaller --noconsole --onefile --windowed --icon=../assets/github.ico --add-data "../assets/splash.mp4;assets" main.py
