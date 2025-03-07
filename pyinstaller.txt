@@ -1,1 +1,6 @@
+#apri il terminale (anche di PyCharm)
+#naviga nella directory che contiene il file main.py
+#copia e incolla lo script
+
+
 pyinstaller --noconsole --onefile --windowed --icon=../assets/github.ico --add-data "../assets/splash.mp4;assets" main.py
